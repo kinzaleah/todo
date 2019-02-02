@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "./App.css";
 
 import TodoList from "./components/TodoList";
@@ -10,21 +10,16 @@ class App extends Component {
     super();
 
     this.state = {
-      todos: JSON.parse(localStorage.getItem("savedTodos")) || []
+      todos: JSON.parse(localStorage.getItem("savedTodos")) || [],
+      showCompleted: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleTodoCompleted = this.toggleTodoCompleted.bind(this);
     this.removeSavedTodos = this.removeSavedTodos.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
-  }
-
-  removeSavedTodos() {
-    localStorage.removeItem("savedTodos");
-
-    this.setState({
-      todos: []
-    });
+    this.showCompletedTodos = this.showCompletedTodos.bind(this);
+    this.hideCompletedTodos = this.hideCompletedTodos.bind(this);
   }
 
   handleSubmit(event) {
@@ -81,6 +76,30 @@ class App extends Component {
     });
   }
 
+  removeSavedTodos() {
+    localStorage.removeItem("savedTodos");
+
+    this.setState({
+      todos: []
+    });
+  }
+
+  showCompletedTodos() {
+    console.log("Show completed todos!");
+
+    this.setState({
+      showCompleted: true
+    });
+  }
+
+  hideCompletedTodos() {
+    console.log("Hide completed todos!");
+
+    this.setState({
+      showCompleted: false
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -90,15 +109,29 @@ class App extends Component {
           toggleTodoCompleted={this.toggleTodoCompleted}
           removeTodo={this.removeTodo}
         />
-        <CompletedTodoList
-          todos={this.state.todos}
-          toggleTodoCompleted={this.toggleTodoCompleted}
-          removeTodo={this.removeTodo}
-        />
+
+        {this.state.showCompleted ? (
+          <Fragment>
+            <button onClick={this.hideCompletedTodos}>
+              Hide completed Todos
+            </button>
+            <CompletedTodoList
+              todos={this.state.todos}
+              toggleTodoCompleted={this.toggleTodoCompleted}
+              removeTodo={this.removeTodo}
+            />
+          </Fragment>
+        ) : (
+          <button onClick={this.showCompletedTodos}>
+            Show completed Todos
+          </button>
+        )}
+        <br />
+        <br />
 
         {this.state.todos.length >= 1 ? (
           <button onClick={this.removeSavedTodos}>
-            Clear your saved Todos!
+            Clear your saved Todos
           </button>
         ) : null}
       </div>

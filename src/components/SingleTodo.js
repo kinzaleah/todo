@@ -13,16 +13,16 @@ class SingleTodo extends React.Component {
     return (
       <Fragment>
         <li
+          className="todo-item"
           onClick={this.handleClick}
           style={
             this.props.todo.isCompleted
-              ? { backgroundColor: "#30ffce", textDecoration: "line-through" }
+              ? { backgroundColor: "#61c693", textDecoration: "line-through" }
               : null
           }
         >
           {this.props.todo.text}
         </li>
-        <button onClick={this.handleButtonClick}>x</button>
       </Fragment>
     );
   }

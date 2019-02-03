@@ -12,17 +12,31 @@ class SingleTodo extends React.Component {
   render() {
     return (
       <Fragment>
-        <li
+        <input
+          type="checkbox"
+          name={this.props.todo.timestamp}
+          id={this.props.todo.timestamp}
           className="todo-item"
           onClick={this.handleClick}
-          style={
-            this.props.todo.isCompleted
-              ? { backgroundColor: "#61c693", textDecoration: "line-through" }
-              : null
-          }
-        >
-          {this.props.todo.text}
-        </li>
+        />
+        <label htmlFor={this.props.todo.timestamp}>
+          <span
+            style={
+              this.props.todo.isCompleted
+                ? {
+                    color: "white",
+                    textDecoration: "line-through"
+                  }
+                : {
+                    color: "white"
+                  }
+            }
+          >
+            {this.props.todo.text}
+          </span>
+        </label>
+        <br />
+        <br />
       </Fragment>
     );
   }

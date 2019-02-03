@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import "./App.css";
+import "./styles/App.css";
 
 import TodoList from "./components/TodoList";
 import CompletedTodoList from "./components/CompletedTodoList";
@@ -30,7 +30,8 @@ class App extends Component {
     const inputTodo = {
       isCompleted: false,
       timestamp: new Date(),
-      text: event.target.elements["todo"].value
+      text: event.target.elements["todo"].value,
+      checked: false
     };
 
     // spread my existing array into a new array and add the input one
@@ -47,6 +48,7 @@ class App extends Component {
 
   // if a user clicks on a todo then it should toggle the isCompleted value
   toggleTodoCompleted(event, todo) {
+    const checked = !event.target.checked;
     const timestamp = todo.timestamp;
     const todos = [...this.state.todos];
     const selectedTodoIndex = todos.findIndex(
@@ -55,7 +57,8 @@ class App extends Component {
 
     todos.splice(selectedTodoIndex, 1, {
       ...todo,
-      isCompleted: !todo.isCompleted
+      isCompleted: !todo.isCompleted,
+      checked: !todo.checked
     });
 
     this.setState({
@@ -102,39 +105,41 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <AddTodo handleSubmit={this.handleSubmit} />
-        <TodoList
-          todos={this.state.todos}
-          toggleTodoCompleted={this.toggleTodoCompleted}
-          removeTodo={this.removeTodo}
-        />
+      <Fragment>
+        <div className="App">
+          <AddTodo handleSubmit={this.handleSubmit} />
+          <TodoList
+            todos={this.state.todos}
+            toggleTodoCompleted={this.toggleTodoCompleted}
+            removeTodo={this.removeTodo}
+          />
 
-        {this.state.showCompleted ? (
-          <Fragment>
-            <button onClick={this.hideCompletedTodos}>
-              Hide completed Todos
+          {this.state.showCompleted ? (
+            <Fragment>
+              <button onClick={this.hideCompletedTodos}>
+                Hide completed Todos
+              </button>
+              <CompletedTodoList
+                todos={this.state.todos}
+                toggleTodoCompleted={this.toggleTodoCompleted}
+                removeTodo={this.removeTodo}
+              />
+            </Fragment>
+          ) : (
+            <button onClick={this.showCompletedTodos}>
+              Show completed Todos
             </button>
-            <CompletedTodoList
-              todos={this.state.todos}
-              toggleTodoCompleted={this.toggleTodoCompleted}
-              removeTodo={this.removeTodo}
-            />
-          </Fragment>
-        ) : (
-          <button onClick={this.showCompletedTodos}>
-            Show completed Todos
-          </button>
-        )}
-        <br />
-        <br />
+          )}
+          <br />
+          <br />
 
-        {this.state.todos.length >= 1 ? (
-          <button onClick={this.removeSavedTodos}>
-            Clear your saved Todos
-          </button>
-        ) : null}
-      </div>
+          {this.state.todos.length >= 1 ? (
+            <button onClick={this.removeSavedTodos}>
+              Clear your saved Todos
+            </button>
+          ) : null}
+        </div>
+      </Fragment>
     );
   }
 }
